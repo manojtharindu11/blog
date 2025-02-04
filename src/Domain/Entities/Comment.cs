@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal class Comment
+    public class Comment
     {
         public int Id { get; set; }
         public required string Content { get; set; }
