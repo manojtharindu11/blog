@@ -1,0 +1,51 @@
+# Build files
+bin/
+obj/
+out/
+
+# User-specific files
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and database
+logs/
+*.log
+*.tlog
+*.sqlite
+*.db
+
+# NuGet Packages
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+NuGet.Config
+nuget.exe
+
+# Visual Studio files
+.vs/
+*.vsp
+*.vspx
+*.ncb
+*.opendb
+*.VC.db
+*.pidb
+
+# Rider and Resharper
+.idea/
+*.DotSettings.user
+_ReSharper.Caches/
+
+# Entity Framework Migrations
+Migrations/
+
+# Docker
+docker-compose.override.yml
+.env
+
+# Publish output
+publish/
+app.publish/
