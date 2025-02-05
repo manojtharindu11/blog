@@ -35,7 +35,7 @@ namespace Infrastructure.Persistance.Configuration
 
             builder.HasMany(x => x.UserRoles)
                 .WithOne(u => u.User)
-                .HasForeignKey(u => u.User.Id);
+                .HasForeignKey(u => u.UserId);
         }
     }
 }
