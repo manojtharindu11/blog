@@ -1,4 +1,6 @@
 ﻿using Domain.Interface;
+using Infrastructure.Persistance.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,31 +9,34 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity>(BlogDbContext context) : IGenericRepository<TEntity> where TEntity : class
     {
-        public Task<TEntity> AddAsync(TEntity entity)
+        internal readonly DbSet<TEntity> DbSet = context.Set<TEntity>();
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            var entry = await DbSet.AddAsync(entity);
+            return entry.Entity;
         }
 
-        public void DeleteAsync(TEntity entity)
+        public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            DbSet.Remove(entity);
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await DbSet.ToListAsync();
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await DbSet.FindAsync(id);
         }
 
-        public void UpdateAsync(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            var entry = DbSet.Update(entity);
+            return entry.Entity;
         }
     }
 }
