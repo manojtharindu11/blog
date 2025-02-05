@@ -18,6 +18,7 @@ namespace Infrastructure.Persistance.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BlogDbContext).Assembly); //Apply configurations created in the configuration file
             //modelBuilder.Entity<UserRole>().HasKey(ur => new { ur.UserId, ur.RoleId });
 
             //modelBuilder.Entity<UserRole>()
