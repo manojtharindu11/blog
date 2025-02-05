@@ -8,7 +8,7 @@ namespace Infrastructure.Persistance.Configuration
     {
         public void Configure(EntityTypeBuilder<Blog> builder)
         {
-            builder.ToTable("Blogs");
+            builder.ToTable("Blog");
             builder.HasKey(x => x.Id);
             builder.Property(p => p.Title).IsRequired().HasMaxLength(250);
             builder.Property(c => c.Content).IsRequired();

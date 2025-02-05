@@ -8,7 +8,7 @@ namespace Infrastructure.Persistance.Configuration
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("Comments");
+            builder.ToTable("Comment");
 
             builder.HasKey(x => x.Id);
 
