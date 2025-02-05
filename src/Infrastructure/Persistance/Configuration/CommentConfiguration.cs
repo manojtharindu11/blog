@@ -4,18 +4,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistance.Configuration
 {
-    public class BlogConfiguration : IEntityTypeConfiguration<Blog>
+    public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
-        public void Configure(EntityTypeBuilder<Blog> builder)
+        public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("Blogs");
+            builder.ToTable("Comments");
+
             builder.HasKey(x => x.Id);
-            builder.Property(p => p.Title).IsRequired().HasMaxLength(250);
+
             builder.Property(c => c.Content).IsRequired();
-            builder.Property(i => i.Image).IsRequired();
             builder.Property(ca => ca.CreatedAt).IsRequired().HasDefaultValue(DateTime.Now);
             builder.Property(ua => ua.UpdateAt).IsRequired().HasDefaultValue(DateTime.Now);
-            builder.HasOne(u => u.User).WithMany(b => b.Blogs).HasForeignKey(ui => ui.UserId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(u => u.User).WithMany(c => c.Comments).HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(b => b.Blog).WithMany(c => c.Comments).HasForeignKey(b => b.BlogId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
