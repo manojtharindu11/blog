@@ -27,7 +27,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Work\\On\\blog\\src\\Domain\\Domain.csproj": {
+                "projectPath": "D:\\Work\\On\\blog\\src\\Domain\\Domain.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
