@@ -20,7 +20,7 @@ namespace Application.Services
 
             if (userExist is not null)
             {
-                return "User is alread exist";
+                throw new Exception("User already exist");
             }
 
             var user = new User { 

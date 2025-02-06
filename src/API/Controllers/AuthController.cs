@@ -1,14 +1,16 @@
-﻿using Application.Models.Request;
+﻿using Application.Interface;
+using Application.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class AuthController : BaseAPIController
+    public class AuthController(IAuthenticationService authenticationService) : BaseAPIController
     {
         [HttpPost("register")]
         public async Task<IResult> Register(RegisterRequest registerRequest)
         {
-            return Results.Ok();
+            var response = await authenticationService.RegisterAsync(registerRequest);
+            return Results.Ok(response);
         }
 
         [HttpPost("login")]
