@@ -13,7 +13,7 @@ namespace Infrastructure.Persistance.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("user");
+            builder.ToTable("User");
 
             builder.HasKey(x => x.Id);
 
