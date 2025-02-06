@@ -1,5 +1,6 @@
 ﻿using Domain.Interface;
 using Infrastructure.Persistance.Context;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +20,9 @@ namespace Infrastructure.Extensions
             services.AddDbContext<BlogDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(IGenericRepository<>));
-            services.AddScoped<IUnitOfWork, IUnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
