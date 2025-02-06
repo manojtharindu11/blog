@@ -14,9 +14,9 @@ namespace Domain.Entities
         public DateTime UpdateAt { get; set; } = DateTime.Now;
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public int BlogId { get; set; }
-        public Blog Blog { get; set; }
+        public Blog? Blog { get; set; }
     }
 }
