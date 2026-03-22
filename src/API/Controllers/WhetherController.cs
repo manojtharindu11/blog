@@ -6,7 +6,7 @@ namespace API.Controllers
     public class WhetherController : BaseAPIController
     {
         [HttpGet("/weatherforecast")]
-        public WeatherForecast[] getWeatherForecasts()
+        public WeatherForecast[] GetWeathers()
         {
             var summaries = new[]
             {
