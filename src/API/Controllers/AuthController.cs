@@ -21,7 +21,12 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IResult> Login(LoginRequest loginRequest)
         {
-            return Results.Ok();
+            var response = await authenticationService.LoginAsync(loginRequest);
+            if (response.IsFailure)
+            {
+                return Results.BadRequest(response);
+            }
+            return Results.Ok(response);
         }
     }
 }
