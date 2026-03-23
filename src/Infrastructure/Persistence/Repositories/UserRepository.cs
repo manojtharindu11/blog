@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class UserRepository(BlogDbContext context) : GenericRepository<User>(context), IUserRepository
     {
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
