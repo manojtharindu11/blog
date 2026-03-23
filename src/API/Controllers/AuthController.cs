@@ -10,6 +10,11 @@ namespace API.Controllers
         public async Task<IResult> Register(RegisterRequest registerRequest)
         {
             var response = await authenticationService.RegisterAsync(registerRequest);
+            if (response.IsFailure)
+            {
+                return Results.BadRequest(response);
+            }
+
             return Results.Ok(response);
         }
 
