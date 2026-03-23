@@ -8,6 +8,6 @@ namespace Application.Common.Result
 {
     public sealed record Error(string Code, string Message)
     {
-        internal static Error None => new("None", string.Empty);
+        internal static Error None => new(ErrorTypeConstant.None, string.Empty);
     }
 }

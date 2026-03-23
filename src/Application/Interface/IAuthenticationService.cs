@@ -1,4 +1,5 @@
-﻿using Application.Models.Request;
+﻿using Application.Common.Result;
+using Application.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Application.Interface
 {
     public interface IAuthenticationService
     {
-        Task<string> RegisterAsync(RegisterRequest registerRequest);
-        Task<string> LoginAsync(LoginRequest loginRequest);
+        Task<Result> RegisterAsync(RegisterRequest registerRequest);
+        Task<Result> LoginAsync(LoginRequest loginRequest);
     }
 }
