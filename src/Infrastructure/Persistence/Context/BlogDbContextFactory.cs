@@ -13,7 +13,7 @@ namespace Infrastructure.Persistance.Context
         public BlogDbContext CreateDbContext(string[] args)
         {
             var optionsbuilder = new DbContextOptionsBuilder<BlogDbContext>();
-            optionsbuilder.UseSqlServer("Data Source=localhost;Database=Blog;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            optionsbuilder.UseSqlServer("Server=localhost,1433;Database=Blog;User Id=sa;Password=Manoj@123;Encrypt=True;TrustServerCertificate=True;");
 
             return new BlogDbContext(optionsbuilder.Options);
         }
