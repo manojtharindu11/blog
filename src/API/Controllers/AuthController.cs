@@ -1,6 +1,9 @@
-﻿using Application.Interface;
+﻿using API.Extensions;
+using Application.Common.Result;
+using Application.Interface;
 using Application.Models.Request;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace API.Controllers
 {
@@ -10,23 +13,14 @@ namespace API.Controllers
         public async Task<IResult> Register(RegisterRequest registerRequest)
         {
             var response = await authenticationService.RegisterAsync(registerRequest);
-            if (response.IsFailure)
-            {
-                return Results.BadRequest(response);
-            }
-
-            return Results.Ok(response);
+            return response.ToHttpResponse();
         }
 
         [HttpPost("login")]
         public async Task<IResult> Login(LoginRequest loginRequest)
         {
             var response = await authenticationService.LoginAsync(loginRequest);
-            if (response.IsFailure)
-            {
-                return Results.BadRequest(response);
-            }
-            return Results.Ok(response);
+            return response.ToHttpResponse();
         }
     }
 }
