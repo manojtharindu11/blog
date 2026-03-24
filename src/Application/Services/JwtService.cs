@@ -1,4 +1,5 @@
 ﻿using Application.Interface;
+using Domain.Entities;
 using Domain.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -14,17 +15,16 @@ namespace Application.Services
 {
     public class JwtService(IConfiguration configuration, IUserRepository userRepository) : IJwtService
     {
-        public async Task<string> GenerateTokenAsync(string email)
+        public async Task<string> GenerateTokenAsync(User user)
         {
-            var user = await userRepository.GetUserByEmailAsync(email);
             var secretKey = configuration["Jwt:Key"];
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var roles = await userRepository.GetUserRoleByEmailAsync(email);
+            var roles = await userRepository.GetUserRoleByEmailAsync(user.Email);
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Email, email),
-                new("UserId", user!.Id.ToString())
+                new(ClaimTypes.Email, user.Email),
+                new("UserId", user.Id.ToString())
             };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
