@@ -1,7 +1,7 @@
 ﻿using Application.Common.Result;
 using Application.Interface;
 using Application.Models.Request;
-using Application.Validators;
+using FluentValidation;
 using Domain.Entities;
 using Domain.Interface;
 
@@ -10,8 +10,9 @@ namespace Application.Services
     public class AuthenticationService(
         IUnitOfWork unitOfWork, 
         IUserRepository userRepository, 
-        LoginRequestValidator loginRequestValidator, 
-        RegisterRequestValidator registerRequestValidator) : IAuthenticationService
+        IValidator<LoginRequest> loginRequestValidator, 
+        IValidator<RegisterRequest> registerRequestValidator,
+        IJwtService jwtService) : IAuthenticationService
     {     
         public async Task<Result> LoginAsync(LoginRequest loginRequest)
         {
@@ -37,7 +38,7 @@ namespace Application.Services
                 return Result.Failure(AuthError.InvalidPassword);
             }
 
-            var token = "token"; // will be replaced later
+            var token = await jwtService.GenerateTokenAsync(email);
 
             var result = new
             {
