@@ -1,33 +1,19 @@
 using Infrastructure.Extensions;
 using Application.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi.Models;
+using API;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+builder.Services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -42,3 +28,22 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
+
+public class LowerCaseDocumentFilter : IDocumentFilter
+{
+    public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
+    {
+        // Get the paths
+        var paths = swaggerDoc.Paths.ToDictionary(
+            path => path.Key.ToLowerInvariant(),
+            path => swaggerDoc.Paths[path.Key]);
+
+        // Add the path in Swagger
+        swaggerDoc.Paths = new OpenApiPaths();
+        foreach (var pathItem in paths)
+        {
+            swaggerDoc.Paths.Add(pathItem.Key, pathItem.Value);
+        }
+    }
+}
