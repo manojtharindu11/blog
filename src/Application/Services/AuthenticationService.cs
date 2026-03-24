@@ -1,18 +1,26 @@
 ﻿using Application.Common.Result;
 using Application.Interface;
 using Application.Models.Request;
+using Application.Validators;
 using Domain.Entities;
 using Domain.Interface;
 
 namespace Application.Services
 {
-    public class AuthenticationService(IUnitOfWork unitOfWork, IUserRepository userRepository) : IAuthenticationService
+    public class AuthenticationService(
+        IUnitOfWork unitOfWork, 
+        IUserRepository userRepository, 
+        LoginRequestValidator loginRequestValidator, 
+        RegisterRequestValidator registerRequestValidator) : IAuthenticationService
     {     
         public async Task<Result> LoginAsync(LoginRequest loginRequest)
         {
-            if (loginRequest == null)
+            var validationResult = await loginRequestValidator.ValidateAsync(loginRequest);
+
+            if (!validationResult.IsValid)
             {
-                return Result.Failure(AuthError.InvalidLoginRequest);
+                var errors = validationResult.Errors.Select(a => a.ErrorMessage);
+                return Result.Failure(AuthError.CreateInvalidLoginRequestError(errors));
             }
 
             var (email, password) = (loginRequest);
@@ -42,9 +50,11 @@ namespace Application.Services
 
         public async Task<Result> RegisterAsync(RegisterRequest registerRequest)
         {
-            if (registerRequest == null)
+            var validationResult = await registerRequestValidator.ValidateAsync(registerRequest);
+            if (!validationResult.IsValid)
             {
-                return Result.Failure(AuthError.InvalidRegisterRequest);
+                var errors = validationResult.Errors.Select(a => a.ErrorMessage);
+                return Result.Failure(AuthError.CreateInvalidRegisterRequestError(errors));
             }
 
             var userExist = await userRepository.GetUserByEmailAsync(registerRequest.Email);
