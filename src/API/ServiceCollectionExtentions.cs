@@ -14,7 +14,7 @@ namespace API
                 // Update the name of documetation
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Angular Blog API",
+                    Title = "Blog API",
                     Version = "v1",
                     Description = "API documentation for Blog app"
                 });

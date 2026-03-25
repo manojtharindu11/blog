@@ -13,6 +13,10 @@ namespace Application.Error
             new(ErrorTypeConstant.InternalServerError, "Something went wrong");
         public static Common.Result.Error UserNotFound =>
             new(ErrorTypeConstant.NotFound, "User not found");
+        public static Common.Result.Error UserAlreadyHasRole =>
+            new(ErrorTypeConstant.ValidationError, "User already has this role");
+        public static Common.Result.Error FailToAssignRole =>
+            new(ErrorTypeConstant.InternalServerError, "Failed to assign role to user");
         public static Common.Result.Error CreateInvalidUserUpdateRequestError(IEnumerable<string> errors) =>
             new(ErrorTypeConstant.ValidationError, string.Join(", ", errors));
         public static Common.Result.Error CreateInvalidUserLoginRequestError(IEnumerable<string> errors) =>

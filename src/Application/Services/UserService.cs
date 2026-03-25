@@ -15,12 +15,29 @@ namespace Application.Services
 {
     public class UserService(
         IUserRepository userRepository,
+        IUserRoleRepository userRoleRepository,
         UserUpdateRequestValidator userUpdateRequestValidator,
         IUnitOfWork unitOfWork) : IUserService
     {
-        public Task<Result<string>> AssignRoleAsync(AssignRoleRequest roleRequest)
+        public async Task<Result<string>> AssignRoleAsync(AssignRoleRequest roleRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var isUserHasRole = await userRoleRepository.HasRoleAsync(roleRequest.UserId, roleRequest.RoleId);
+                if (isUserHasRole)
+                {
+                    return Result.Failure<string>(UserError.UserAlreadyHasRole);
+                }
+                var result = await userRoleRepository.AddAsync(roleRequest.UserId, roleRequest.RoleId);
+                return result
+                    ? Result.Success("Role assigned successfully")
+                    : Result.Failure<string>(UserError.FailToAssignRole);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<Result<string>> DeleteAsync(int id)
