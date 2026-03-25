@@ -35,5 +35,13 @@ namespace API.Controllers
             var result = await userService.DeleteAsync(id);
             return result.ToHttpResponse();
         }
+
+        [HttpGet("{id}")]
+
+        public async Task<IResult> GetUserById(int id)
+        {
+            var result = await userService.GetByIdAsync(id);
+            return result.ToHttpResponse();
+        }
     }
 }
