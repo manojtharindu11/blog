@@ -1,21 +1,16 @@
 ﻿using Application.Common.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application;
+namespace Application.Error;
 
 public static class AuthError
 {
-    public static Error InvalidRegisterRequest => new(ErrorTypeConstant.ValidationError, "Invalid register request");
-    public static Error UserAlreadyExist => new(ErrorTypeConstant.ValidationError, "User already exist");
-    public static Error InvalidLoginRequest => new(ErrorTypeConstant.ValidationError, "Invalid login request");
-    public static Error UserNotFound => new(ErrorTypeConstant.NotFound, "User not found");
-    public static Error InvalidPassword => new(ErrorTypeConstant.ValidationError, "Invalid password");
-    public static Error CreateInvalidLoginRequestError(IEnumerable<string> errors) => 
+    public static Common.Result.Error InvalidRegisterRequest => new(ErrorTypeConstant.ValidationError, "Invalid register request");
+    public static Common.Result.Error UserAlreadyExist => new(ErrorTypeConstant.ValidationError, "User already exist");
+    public static Common.Result.Error InvalidLoginRequest => new(ErrorTypeConstant.ValidationError, "Invalid login request");
+    public static Common.Result.Error UserNotFound => new(ErrorTypeConstant.NotFound, "User not found");
+    public static Common.Result.Error InvalidPassword => new(ErrorTypeConstant.ValidationError, "Invalid password");
+    public static Common.Result.Error CreateInvalidLoginRequestError(IEnumerable<string> errors) => 
         new(ErrorTypeConstant.ValidationError, string.Join(", ", errors));
-    public static Error CreateInvalidRegisterRequestError(IEnumerable<string> errors) =>
+    public static Common.Result.Error CreateInvalidRegisterRequestError(IEnumerable<string> errors) =>
         new(ErrorTypeConstant.ValidationError, string.Join(", ", errors));
 }

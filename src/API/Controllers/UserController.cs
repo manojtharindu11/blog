@@ -44,7 +44,7 @@ namespace API.Controllers
             return result.ToHttpResponse();
         }
 
-        [HttpPost]
+        [HttpPost("assign-role")]
         public async Task<IResult> AssignRoleToUser([FromBody] AssignRoleRequest roleRequest)
         {
             var result = await userService.AssignRoleAsync(roleRequest);

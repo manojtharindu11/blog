@@ -5,6 +5,7 @@ using FluentValidation;
 using Domain.Entities;
 using Domain.Interface;
 using Microsoft.AspNetCore.Identity;
+using Application.Error;
 
 namespace Application.Services
 {
