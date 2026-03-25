@@ -23,7 +23,7 @@ namespace Infrastructure.Persistence.Repositories
             DbSet.Remove(entity);
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public async Task<IReadOnlyList<TEntity>> GetAllAsync()
         {
             return await DbSet.ToListAsync();
         }
