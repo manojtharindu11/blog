@@ -79,9 +79,29 @@ namespace Application.Services
             }
         }
 
-        public Task<Result<UserDto>> GetByIdAsync(int id)
+        public async Task<Result<UserDto>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await userRepository.GetByIdAsync(id);
+                if (user is null)
+                {
+                    return Result.Failure<UserDto>(UserError.UserNotFound);
+                }
+
+                var userDetails = new UserDto(
+                                   user.Id,
+                                   user.Email,
+                                   user.UserName,
+                                   user.UserRoles.Select(x => x.Role.Name).ToList());
+
+                return Result.Success(userDetails);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<Result<string>> UpdateAsync(UserUpdateRequest userUpdateRequest)
