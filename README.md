@@ -7,10 +7,15 @@ Simple ASP.NET Core Web API for blog user management, authentication, and role a
 - Architecture (Clean Architecture)
 - Tech stack
 - Project structure
-- Quick start
+- Request flow
+- Prerequisites
 - Configuration
+- Quick start
+- How to run
 - Database migrations
 - API endpoints + examples
+- Development notes
+- Learning reference
 
 ## Architecture
 
