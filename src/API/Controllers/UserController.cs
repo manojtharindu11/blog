@@ -8,6 +8,7 @@ namespace API.Controllers
 {
     public class UserController(IUserService userService) : BaseAPIController
     {
+        [Authorize]
         [HttpGet]
 
         public async Task<IResult> GetAllUsers
@@ -20,6 +21,7 @@ namespace API.Controllers
             return users.ToHttpResponse();
         }
 
+        [Authorize]
         [HttpPut]
 
         public async Task<IResult> UpdateUser([FromBody] UserUpdateRequest userUpdateRequest)
@@ -28,6 +30,7 @@ namespace API.Controllers
             return result.ToHttpResponse();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
 
         public async Task<IResult> DeleteUser(int id)
@@ -36,6 +39,7 @@ namespace API.Controllers
             return result.ToHttpResponse();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
 
         public async Task<IResult> GetUserById(int id)
@@ -44,6 +48,7 @@ namespace API.Controllers
             return result.ToHttpResponse();
         }
 
+        [Authorize]
         [HttpPost("assign-role")]
         public async Task<IResult> AssignRoleToUser([FromBody] AssignRoleRequest roleRequest)
         {
