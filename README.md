@@ -11,8 +11,6 @@ Simple ASP.NET Core Web API for blog user management, authentication, and role a
 - Configuration
 - Database migrations
 - API endpoints + examples
-- Tests
-- Troubleshooting
 
 ## Architecture
 
@@ -213,27 +211,13 @@ curl -X DELETE "http://localhost:5017/api/user/1"
 curl -X POST "http://localhost:5017/api/user/assign-role" -H "Content-Type: application/json" -d "{\"userId\":1,\"roleId\":1}"
 ```
 
-## Tests
-
-Run all tests:
-
-```bash
-dotnet test
-```
-
 ## Development Notes
 
 - Swagger is enabled in Development environment.
 - Keep secrets (DB password, JWT key) out of source control for production.
 
-## Troubleshooting
-
-- SQL connection errors: verify SQL Server is running and `ConnectionStrings:DefaultConnection` matches your server, username, and password.
-- HTTPS dev cert issues: try `dotnet dev-certs https --trust`.
-- Migration issues: ensure the startup project is `src/API` when running `dotnet ef` commands.
-
 ## Learning Reference
 
 This project appears to be based on this learning playlist:
 
-- https://youtube.com/playlist?list=PLc2Ziv7051baIPDSKJcnob8chhURMgdL6&si=l0y5myuirxHwTNcR
+- [YouTube playlist](https://youtube.com/playlist?list=PLc2Ziv7051baIPDSKJcnob8chhURMgdL6&si=l0y5myuirxHwTNcR)
