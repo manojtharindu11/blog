@@ -4,7 +4,7 @@ namespace API.Extensions
 {
     public static class ResultExtension
     {
-        public static IResult ToHttpResponse(this Result result)
+        public static IResult ToHttpResponse(this Application.Common.Result.Result result)
         {
             if (result.IsSuccess)
             {
@@ -19,7 +19,7 @@ namespace API.Extensions
         {
             if (result.IsSuccess)
             {
-                return Results.Ok(result);
+                return Microsoft.AspNetCore.Http.Results.Ok(result);
             }
             else
             {
@@ -31,11 +31,11 @@ namespace API.Extensions
         {
             return error.Code switch
             {
-                ErrorTypeConstant.ValidationError => Results.BadRequest(result),
-                ErrorTypeConstant.NotFound => Results.NotFound(result),
-                ErrorTypeConstant.Forbidden => Results.Forbid(),
-                ErrorTypeConstant.UnAuthorized => Results.Unauthorized(),
-                _ => Results.Problem(detail: error.Message, statusCode: 500)
+                ErrorTypeConstant.ValidationError => Microsoft.AspNetCore.Http.Results.BadRequest(result),
+                ErrorTypeConstant.NotFound => Microsoft.AspNetCore.Http.Results.NotFound(result),
+                ErrorTypeConstant.Forbidden => Microsoft.AspNetCore.Http.Results.Forbid(),
+                ErrorTypeConstant.UnAuthorized => Microsoft.AspNetCore.Http.Results.Unauthorized(),
+                _ => Microsoft.AspNetCore.Http.Results.Problem(detail: error.Message, statusCode: 500)
             };
         }
     }                                                       

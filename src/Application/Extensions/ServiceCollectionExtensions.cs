@@ -14,6 +14,7 @@ public static class ServiceCollectionExtenstions
         services.AddValidatorsFromAssembly(typeof(RegisterRequestValidator).Assembly);
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

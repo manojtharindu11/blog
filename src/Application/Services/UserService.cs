@@ -1,7 +1,9 @@
 ﻿using Application.Common.Result;
 using Application.DTOs;
+using Application.Error;
 using Application.Interface;
 using Application.Models.Request;
+using Application.Validators;
 using Domain.Interface;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,10 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(
+        IUserRepository userRepository, 
+        UserUpdateRequestValidator userUpdateRequestValidator,
+        IUnitOfWork unitOfWork) : IUserService
     {
         public Task<Result<string>> AssignRoleAsync(AssignRoleRequest roleRequest)
         {
@@ -62,9 +67,35 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Result<string>> UpdateAsync(UserUpdateRequest user)
+        public async Task<Result<string>> UpdateAsync(UserUpdateRequest userUpdateRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var validationResult = await userUpdateRequestValidator.ValidateAsync(userUpdateRequest);
+                if (!validationResult.IsValid)
+                {
+                    var errors = validationResult.Errors.Select(a => a.ErrorMessage);
+                    return Result.Failure<string>(UserError.CreateInvalidUserUpdateRequestError(errors));
+                }
+
+                var user = await userRepository.GetByIdAsync(userUpdateRequest.Id);
+
+                if (user is null)
+                {
+                    return Result.Failure<string>(UserError.UserNotFound);
+                }
+
+                user.UserName = userUpdateRequest.UserName;
+                user.Email = userUpdateRequest.Email;
+                userRepository.Update(user);
+                await unitOfWork.CommitAsync();
+                return Result.Success("User updated successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

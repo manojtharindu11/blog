@@ -1,19 +1,22 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Extensions;
+using Application.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class UserController : BaseAPIController
+    public class UserController(IUserService userService) : BaseAPIController
     {
-        [Authorize]
         [HttpGet]
 
-        public string[] GetUsers()
+        public async Task<IResult> GetAllUsers
+        (
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10
+        )
         {
-            return new[]
-            {
-                "User 1", "User 2", "User 3", "User 4", "User 5"
-            };
+            var users = await userService.GetAsync(pageNumber, pageSize);
+            return users.ToHttpResponse();
         }
     }
 }
