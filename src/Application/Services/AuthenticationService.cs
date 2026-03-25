@@ -4,6 +4,7 @@ using Application.Models.Request;
 using FluentValidation;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
 {
@@ -70,6 +71,10 @@ namespace Application.Services
                 Password = registerRequest.Password,
                 UserName = registerRequest.UserName
             };
+
+            var passwordHasher = new PasswordHasher<User>();
+            var hashedPassword = passwordHasher.HashPassword(user, registerRequest.Password);
+            user.Password = hashedPassword;
 
             await userRepository.AddAsync(user);
             await unitOfWork.CommitAsync();
