@@ -1,4 +1,5 @@
 ﻿using Domain.Interface;
+using Domain.Entities;
 using Infrastructure.Persistance.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,11 +26,25 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<IReadOnlyList<TEntity>> GetAllAsync()
         {
-            return await DbSet.ToListAsync();
+            IQueryable<TEntity> query = DbSet;
+
+            if (typeof(TEntity) == typeof(User))
+            {
+                query = query.Include("UserRoles.Role");
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<TEntity?> GetByIdAsync(int id)
         {
+            if (typeof(TEntity) == typeof(User))
+            {
+                return await DbSet
+                    .Include("UserRoles.Role")
+                    .FirstOrDefaultAsync(entity => EF.Property<int>(entity, "Id") == id);
+            }
+
             return await DbSet.FindAsync(id);
         }
 
