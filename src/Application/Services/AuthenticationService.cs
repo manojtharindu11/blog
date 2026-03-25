@@ -69,7 +69,8 @@ namespace Application.Services
             var user = new User { 
                 Email = registerRequest.Email,
                 Password = registerRequest.Password,
-                UserName = registerRequest.UserName
+                UserName = registerRequest.UserName,
+                UserRoles = [new UserRole { RoleId = 3 }]
             };
 
             var passwordHasher = new PasswordHasher<User>();
