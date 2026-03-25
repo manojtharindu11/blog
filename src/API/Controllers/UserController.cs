@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
 using Application.Interface;
+using Application.Models.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,14 @@ namespace API.Controllers
         {
             var users = await userService.GetAsync(pageNumber, pageSize);
             return users.ToHttpResponse();
+        }
+
+        [HttpPut]
+
+        public async Task<IResult> UpdateUser([FromBody] UserUpdateRequest userUpdateRequest)
+        {
+            var result = await userService.UpdateAsync(userUpdateRequest);
+            return result.ToHttpResponse();
         }
     }
 }
