@@ -1,5 +1,7 @@
-﻿using Domain.Interface;
+﻿using Domain.Entities;
+using Domain.Interface;
 using Infrastructure.Persistance.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +12,66 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class UserRoleRepository(BlogDbContext blogDbContext) : IUserRoleRepository
     {
-        public Task<bool> AddAsync(int userId, int roleId)
+        public async Task<bool> AddAsync(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userRole = new UserRole
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                };
+
+                await blogDbContext.UserRoles.AddAsync(userRole);
+                var result = await blogDbContext.SaveChangesAsync() > 0;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        public Task<bool> HasRoleAsync(int userId)
+        public async Task<bool> HasRoleAsync(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var isUserHasRole = await blogDbContext
+                    .UserRoles
+                    .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+
+                return isUserHasRole;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        public Task<bool> RemoveAsync(int userId, int roleId)
+        public async Task<bool> RemoveAsync(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userRole = blogDbContext
+                    .UserRoles
+                    .FirstOrDefault(ur => ur.UserId == userId && ur.RoleId == roleId);
+
+                if (userRole is null)
+                {
+                    return false;
+                }
+
+                blogDbContext.UserRoles.Remove(userRole);
+                var result = await blogDbContext.SaveChangesAsync() > 0;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }
