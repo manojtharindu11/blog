@@ -27,5 +27,13 @@ namespace API.Controllers
             var result = await userService.UpdateAsync(userUpdateRequest);
             return result.ToHttpResponse();
         }
+
+        [HttpDelete("{id}")]
+
+        public async Task<IResult> DeleteUser(int id)
+        {
+            var result = await userService.DeleteAsync(id);
+            return result.ToHttpResponse();
+        }
     }
 }
