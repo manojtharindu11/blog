@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Application.Services
 {
     public class UserService(
-        IUserRepository userRepository, 
+        IUserRepository userRepository,
         UserUpdateRequestValidator userUpdateRequestValidator,
         IUnitOfWork unitOfWork) : IUserService
     {
@@ -23,9 +23,26 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Result<string>> DeleteAsync(int id)
+        public async Task<Result<string>> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await userRepository.GetByIdAsync(id);
+
+                if (user is null)
+                {
+                    return Result.Failure<string>(UserError.UserNotFound);
+                }
+
+                userRepository.Delete(user);
+                await unitOfWork.CommitAsync();
+                return Result.Success("User deleted successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<Result<PagedResult<UserDto>>> GetAsync(int pageNumber = 1, int pageSize = 10)
