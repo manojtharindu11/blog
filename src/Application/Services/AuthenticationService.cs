@@ -18,7 +18,7 @@ namespace Application.Services
         public async Task<Result> LoginAsync(LoginRequest loginRequest)
         {
             var validationResult = await loginRequestValidator.ValidateAsync(loginRequest);
-
+             
             if (!validationResult.IsValid)
             {
                 var errors = validationResult.Errors.Select(a => a.ErrorMessage);
@@ -34,7 +34,10 @@ namespace Application.Services
                 return Result.Failure(AuthError.UserNotFound);
             }
 
-            if (user.Password != password)
+            var passwordHasher = new PasswordHasher<User>();
+            var verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, password);
+
+            if (verificationResult == PasswordVerificationResult.Failed)
             {
                 return Result.Failure(AuthError.InvalidPassword);
             }
