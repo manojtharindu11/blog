@@ -43,5 +43,12 @@ namespace API.Controllers
             var result = await userService.GetByIdAsync(id);
             return result.ToHttpResponse();
         }
+
+        [HttpPost]
+        public async Task<IResult> AssignRoleToUser([FromBody] AssignRoleRequest roleRequest)
+        {
+            var result = await userService.AssignRoleAsync(roleRequest);
+            return result.ToHttpResponse(); 
+        }
     }
 }
